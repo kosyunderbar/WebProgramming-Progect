@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+  </head>
+</html>
+<style>
+  #divContainer {
+      width: 100%;
+      height: 80%;
+      background: #ddd;
+  }
+  
+  #divContentArea {
+      left: 0px;
+      top: 0px;
+      right: 0px;
+      bottom: 0px;
+  }
+  
+  
+  .canvas {
+     cursor: crosshair;
+     position:relative;
+     left:0px;
+     top:0px;
+  }
+  
+  </style>
+
+</head>
+<body>
+  
+     <div>
+        Click the button to select the shape type then click and drag mouse on the canvas below.
+        <BR>
+        
+        <button type="button" onClick='shapetype="circle";'>Draw Circle</button>
+        <button type="button" onClick='shapetype="triangle";'>Draw Triangle</button>
+        <BR>
+  
+     </div>
+     
+  <div id="divContainer">
+     
+     <div id="divContentArea">
+  
+              <canvas id="canvas" class='canvas'>
+              Sorry, your browser does not support a canvas object.
+              </canvas>
+  
+     </div>
+  
+  </div>
+  
+  <script>
+  var canvas = document.getElementById('canvas');
+  var context = canvas.getContext('2d');
+  
+  var canrect = canvas.getBoundingClientRect();
+  
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  
+  var lastPoint;
+  var startPoint;
+  
+  var isDrawing = false;
+  var shapetype = 'triangle';
+  canvas.onmousedown = function(e) {
+     isDrawing = true;   
+     if ( shapetype == 'circle' ) {
+        canvas.removeEventListener("mousemove", drawTriangle, false);
+        canvas.addEventListener("mousemove", drawCircle, false);
+     } else {
+        canvas.removeEventListener("mousemove", drawCircle, false);
+        canvas.addEventListener("mousemove", drawTriangle, false);
+     }
+        
+     lastPoint = { x: event.offsetX, y: event.offsetY };
+     startPoint = lastPoint;      
+  };
+  function drawTriangle(event) {  
+    event.preventDefault();
+    event.stopPropagation();
+  
+     if (!isDrawing) return;
+  
+     mx = event.offsetX;
+     my = event.offsetY;
+
+     ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
+     // calculate the rectangle width/height based
+     // on starting vs current mouse position
+     var twidth = Math.abs(mx - startPoint.x) ;
+     var theight = Math.abs(my - startPoint.y) ;
+  
+     // draw a new rect from the start position 
+     // to the current mouse position
+     ctx.beginPath();
+     ctx.lineWidth = 3;
+     ctx.lineJoin = ctx.lineCap = 'round';
+     ctx.setLineDash([0, 0]);
+     ctx.globalAlpha = 1.0;
+  
+  
+     if ( mx >= startPoint.x ) {
+      ctx.moveTo(startPoint.x, startPoint.y );
+      ctx.lineTo(mx, my);
+      ctx.moveTo(mx-(2*twidth), my );
+      ctx.lineTo(mx, my);
+      ctx.moveTo(startPoint.x, startPoint.y );
+      ctx.lineTo(mx-(2*twidth), my );
+     } else {
+      ctx.moveTo(startPoint.x, startPoint.y );
+      ctx.lineTo(mx, my);
+      ctx.moveTo(mx+(2*twidth), my );
+      ctx.lineTo(mx, my);
+      ctx.moveTo(startPoint.x, startPoint.y );
+      ctx.lineTo(mx+(2*twidth), my );
+     }
+  
+     ctx.closePath();
+     ctx.strokeStyle = 'black';
+     ctx.stroke();
+     ctx.fillStyle = 'rgba(25,50,75,0.5)';
+     ctx.fill();
+  
+  }
+  
+  function drawCircle(e) {
+  
+     // This works
+  
+     e.preventDefault();
+     e.stopPropagation();
+  
+     if (!isDrawing) return;
+  
+     mx = e.offsetX;
+     my = e.offsetY;
+  
+     // clear the canvas
+     context.clearRect(0, 0, canvas.width, canvas.height);
+  
+     // calculate the rectangle width/height based
+     // on starting vs current mouse position
+     var cradius = Math.abs(mx - startPoint.x) ;
+  
+     // draw a new rect from the start position 
+     // to the current mouse position
+     context.beginPath();
+     context.lineWidth = 3;
+     context.lineJoin = context.lineCap = 'round';
+     context.setLineDash([0, 0]);
+     context.globalAlpha = 1.0;
+  
+     context.strokeStyle = 'black';
+     context.arc(startPoint.x, startPoint.y, cradius, 0, 2 * Math.PI, false);
+
+     context.stroke();
+  }
+  
+  canvas.onmouseup = function() {
+     isDrawing = false;
+  };
+  
+  canvas.onmouseleave = function() {
+     isDrawing = false;
+  };
+  
+  </script>
+  </body>
+  </html>
