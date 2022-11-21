@@ -45,12 +45,12 @@ function onMove(event) {
             const height = event.offsetY - rectY;
             ctx.beginPath();
             ctx.moveTo(event.offsetX, event.offsetY);
-            ctx.fillRect(rectX, rectY, width, height);
+            ctx.strokeRect(rectX, rectY, width, height);
         } else if (modeCircle) {
             const circleWidth = event.offsetX - rectX;
             ctx.beginPath();
             ctx.arc(rectX, rectY, circleWidth, 0, Math.PI * 2, true);
-            ctx.fill();
+            ctx.stroke();
         }
     }
     ctx.moveTo(event.offsetX, event.offsetY);
