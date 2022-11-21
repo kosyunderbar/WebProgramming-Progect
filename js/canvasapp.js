@@ -1,139 +1,210 @@
+const fontSize = document.getElementById("font-size");
+const fontWeight = document.getElementById("font-weight");
+const fontType = document.getElementById("font-type");
+const pencil = document.getElementById("mode-pencil");
+const circle = document.getElementById("mode-circle");
+const rectangle = document.getElementById("mode-rectangle");
+
+const colorOptions = Array.from(document.getElementsByClassName("color-option"));
 const textInput = document.getElementById("text");
-const saveBtn = document.getElementById("save-btn");
-const fileInput = document.getElementById("file");
 const modeBtn = document.getElementById("mode-btn");
-const resetBtn = document.getElementById("reset-btn");
+const destroyBtn = document.getElementById("destroy-btn");
 const eraserBtn = document.getElementById("eraser-btn");
-const colorOptions = Array.from(
-  // forEach를 사용하기 위해 HTML 컬렉션 말고 array 객체 사용
-  document.getElementsByClassName("color-option")
-);
-const color = document.getElementById("color");
+const saveBtn = document.getElementById("save");
+const fileInput = document.getElementById("file");
 const lineWidth = document.getElementById("line-width");
+const color = document.getElementById("color");
 const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext("2d");
+const CANVAS_WIDTH = 960;
+const CANVAS_HEIGHT = 540;
 
-const GARO = 960;
-const SERO = 540;
+const info = document.querySelector(".tooltiptext");
 
-canvas.width = GARO;
-canvas.height = SERO;
-
+canvas.width = 960;
+canvas.height = 540;
+ctx.lineWidth = lineWidth.value;
 ctx.lineCap = "round";
-ctx.lineWidth = lineWidth.ariaValueMax;
+let isPainting = false;
+let isFilling = false;
+let modePencil = true;
+let modeCircle = false;
+let modeRectangle = false;
 
-let isPainting = false; // 그림을 그릴 때는 True가 되게 함
-let isFilling = false; // 기본값은 draw, 그리기 모드기 때문에.
+let rectX = 0;
+let rectY = 0;
 
 function onMove(event) {
-  if (isPainting) {
-    // isPainting이 true면 페인팅함.
-    ctx.lineTo(event.offsetX, event.offsetY);
-    ctx.stroke();
-    return;
-  }
-  ctx.moveTo(event.offsetX, event.offsetY);
-  // isPainting이 false면 마우스 위치만 움직임
+    if (isPainting) {
+        if (modePencil) {
+            ctx.lineTo(event.offsetX, event.offsetY);
+            ctx.stroke();
+            return;
+        } else if (modeRectangle) {
+            const width = event.offsetX - rectX;
+            const height = event.offsetY - rectY;
+            ctx.beginPath();
+            ctx.moveTo(event.offsetX, event.offsetY);
+            ctx.fillRect(rectX, rectY, width, height);
+        } else if (modeCircle) {
+            const circleWidth = event.offsetX - rectX;
+            ctx.beginPath();
+            ctx.arc(rectX, rectY, circleWidth, 0, Math.PI * 2, true);
+            ctx.fill();
+        }
+    }
+    ctx.moveTo(event.offsetX, event.offsetY);
 }
 
-function startPainting() {
-  isPainting = true; // 클릭시에는 True
+function handlePencil() {
+    modePencil = true;
+    modeCircle = false;
+    modeRectangle = false;
+    isFilling = false;
 }
 
-function cancelPainting() {
-  isPainting = false; // 마우스를 떼면 다시 false로
-  ctx.beginPath();
+function handleCircle() {
+    modePencil = false;
+    modeCircle = true;
+    modeRectangle = false;
+    isFilling = false;
+}
+
+function handleRectangle() {
+    modePencil = false;
+    modeCircle = false;
+    modeRectangle = true;
+    isFilling = false;
+}
+
+function onMouseDown() {
+    isPainting = true;
+    if (modeRectangle) {
+        rectX = event.offsetX;
+        rectY = event.offsetY;
+        ctx.beginPath();
+    } else if (modeCircle) {
+        rectX = event.offsetX;
+        rectY = event.offsetY;
+    }
+}
+
+function onMouseUp() {
+    isPainting = false;
 }
 
 function onLineWidthChange(event) {
-  ctx.lineWidth = event.target.value;
+    ctx.lineWidth = event.target.value;
+    ctx.beginPath();
 }
 
 function onColorChange(event) {
-  ctx.strokeStyle = event.target.value;
-  ctx.fillStyle = event.target.value;
+    ctx.strokeStyle = event.target.value;
+    ctx.fillStyle = event.target.value;
+    ctx.beginPath();
 }
 
 function onColorClick(event) {
-  const colorValue = event.target.dataset.color; // div에서 data-color에 저장한 color값 가져옴.
-  ctx.strokeStyle = colorValue;
-  ctx.fillStyle = colorValue;
-  color.value = colorValue;
+    const colorValue = event.target.dataset.color;
+    ctx.strokeStyle = colorValue;
+    ctx.fillStyle = colorValue;
+    color.value = colorValue;
+    ctx.beginPath();
 }
 
-function onModeClick() {
-  if (isFilling) {
-    isFilling = false; // 채우기 모드면? -> 버튼엔 draw라고 나타남. 그래야 버튼 누르고 draw로 가니까.
-    modeBtn.innerText = "Fill"; // isFilling이 true면 버튼은 'fill'이라고 나타남
-  } else {
-    isFilling = true; // 채우기 모드가 아니면? -> 버튼엔 fill이라고 나타남. 그래야 버튼 누르고 fill로 가니까.
-    modeBtn.innerText = "Draw"; // isFilling이 false면 버튼은 'Draw'라고 나타남
-  }
+function onModeClick(event) {
+    isFilling = true;
+    modePencil = false;
+    modeCircle = false;
+    modeRectangle = false;
 }
 
-function onCanvasClick() {
-  if (isFilling) {
-    ctx.fillRect(0, 0, GARO, SERO);
-  }
+function onCavasClick() {
+    if (isFilling) {
+        ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    }
 }
 
-function onResetClick() {
-  ctx.fillStyle = "white"; // 전체를 하얀색으로 fill 하는 것과 같음.
-  ctx.fillRect(0, 0, GARO, SERO);
+function onDestoryClick() {
+    if (window.confirm("정말로 초기화를 하십니까?")) {
+        ctx.fillStyle = "white";
+        ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    }
 }
 
 function onEraserClick() {
-  ctx.strokeStyle = "white"; // 지우기 모드는 결국 흰색 브러쉬로 그리는 것과 같음.
-  isFilling = false;
-  modeBtn.innerText = "Fill";
+    modePencil = true;
+    ctx.beginPath();
+    ctx.strokeStyle = "white";
+    isFilling = false;
+    modeCircle = false;
+    modeRectangle = false;
 }
 
 function onFileChange(event) {
-  const file = event.target.files[0]; // 선택한 파일의 url을 요청하는 과정.
-  const url = URL.createObjectURL(file); // url로 파일에 접근하면 파일을 다룰 수 있음.
-  const image = new Image();
-  image.src = url;
-  image.onload = function () {
-    ctx.drawImage(image, 0, 0, GARO, SERO); // ctx의 메소드 중 하나. 이미지를 필요로 하는데 이미 이미지를 위에서 뽑아냄.
-    //drawImage(image, 시작하는 x좌표, 시작하는 y좌표, 가로 길이, 세로 길이)
-  };
+    const file = event.target.files[0];
+    const url = URL.createObjectURL(file);
+    const image = new Image();
+    image.src = url;
+    image.onload = function () {
+        ctx.drawImage(image, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+        fileInput.value = null;
+    };
 }
 
 function onDoubleClick(event) {
-  const text = textInput.value;
-  if (text !== "") {
-    ctx.save();
-    ctx.lineWidth = 1;
-    ctx.font = "25px 'Press Start 2P'";
-    ctx.fillText(text, event.offsetX, event.offsetY);
-    ctx.restore();
-  }
+    const text = textInput.value;
+    const textSize = fontSize.value; 
+    const textType = fontType.value;   //  구현 못함,,,,
+    const textWeight = fontWeight.value;   
+
+    if (text !== "") {
+        ctx.save();
+        modePencil = false;
+        ctx.lineWidth = 1;
+        ctx.font = `${textWeight} ${textSize}px ${textType}`;
+        ctx.fillText(text, event.offsetX, event.offsetY);
+        ctx.restore();
+    }
+    console.log(textWeight);
 }
 
 function onSaveClick() {
-  // 원래는 이미지를 base64로 인코딩된 URL로 반환함.
-  const url = canvas.toDataURL();
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "필기 자료.png";
-  a.click();
+    const url = canvas.toDataURL();
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "필기자료.png";
+    a.click();
 }
 
 canvas.addEventListener("dblclick", onDoubleClick);
 canvas.addEventListener("mousemove", onMove);
-canvas.addEventListener("mousedown", startPainting);
-canvas.addEventListener("mouseup", cancelPainting);
-canvas.addEventListener("mouseleave", cancelPainting);
-
-canvas.addEventListener("click", onCanvasClick);
+canvas.addEventListener("mousedown", onMouseDown);
+document.addEventListener("mouseup", onMouseUp);
+canvas.addEventListener("click", onCavasClick);
 lineWidth.addEventListener("change", onLineWidthChange);
 color.addEventListener("change", onColorChange);
 
-colorOptions.forEach(color => color.addEventListener("click", onColorClick));
-//forEach는 배열만 사용, 컬러가 클릭될 때 마다 color에 onColorClick을 통해 색 넣기
+colorOptions.forEach((color) => color.addEventListener("click", onColorClick));
 
 modeBtn.addEventListener("click", onModeClick);
-resetBtn.addEventListener("click", onResetClick);
+destroyBtn.addEventListener("click", onDestoryClick);
 eraserBtn.addEventListener("click", onEraserClick);
 fileInput.addEventListener("change", onFileChange);
 saveBtn.addEventListener("click", onSaveClick);
+
+pencil.addEventListener("click", handlePencil);
+circle.addEventListener("click", handleCircle);
+rectangle.addEventListener("click", handleRectangle);
+
+const lineRange = document.querySelector(".line-range");
+lineRange.addEventListener("input", function () {
+    const value = this.value;
+    this.style.background = `linear-gradient(to right, #ff4500 0%, #ff4500 ${value}%, #fff ${value}%, white 100%)`;
+});
+
+const fontRange = document.querySelector(".font-range");
+fontRange.addEventListener("input", function () {
+    const value = this.value;
+    this.style.background = `linear-gradient(to right, #ff4500 0%, #ff4500 ${value}%, #fff ${value}%, white 100%)`;
+});
