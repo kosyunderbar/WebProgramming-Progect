@@ -1,72 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Canvas</title>
-    <link rel="stylesheet" href="css/canvasstyle.css" />
-  </head>
-  <body>
-    <div class="color-options">
-      <input type="color" id="color" />
-      <div
-        class="color-option"
-        style="background-color: #ffffff"
-        data-color="#ffffff"></div>
-      <!-- div 안에 data-(word)속성을 사용하면 div 속성 안의 dataset에서 data-(word)에 저장된 값 jsp에서 사용 가능.-->
-      <div
-        class="color-option"
-        style="background-color: #2c2c2c"
-        data-color="#2c2c2c"></div>
-      <div
-        class="color-option"
-        style="background-color: #ff3b30"
-        data-color="#ff3b30"></div>
-      <div
-        class="color-option"
-        style="background-color: #ff9500"
-        data-color="#ff9500"></div>
-      <div
-        class="color-option"
-        style="background-color: #ffcc00"
-        data-color="#ffcc00"></div>
-      <div
-        class="color-option"
-        style="background-color: #4cd963"
-        data-color="#4cd963"></div>
-      <div
-        class="color-option"
-        style="background-color: #5ac8fa"
-        data-color="#5ac8fa"></div>
-      <div
-        class="color-option"
-        style="background-color: #0579ff"
-        data-color="#0579ff"></div>
-      <div
-        class="color-option"
-        style="background-color: #5856d6"
-        data-color="#5856d6"></div>
-    </div>
-    <canvas></canvas>
-    <div class="btns">
-      <input
-        id="line-width"
-        type="range"
-        min="1"
-        max="10"
-        value="5"
-        step="0.5" />
-      <button id="mode-btn">fill</button>
-      <button id="reset-btn">초기화</button>
-      <button id="eraser-btn">지우개</button>
-      <label for="file">
-        이미지 불러오기 <input type="file" accept="image/*" id="file" />
-      </label>
-      <input type="text" placeholder="텍스트 입력 후 더블클릭" id="text" />
-      <!-- 오직 이미지만 받음. -->
-      <button id="save-btn">저장</button>
-    </div>
-    <script src="js/canvasapp.js"></script>
-  </body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>canvas</title>
+        <link rel="stylesheet" href="css/canvasstyle.css" />
+
+    </head>
+    <body>
+        <style data="test" type="text/css"></style>
+
+        <div class="container">
+            <div class="btns">
+                <div class="range">
+                    <input id="line-width" class="line-range" type="range" min="1" max="100" value="40" step="1" />
+                </div>
+                <button class="button" id="mode-pencil"><img src="icons/pencil.png"></button>
+                <button class="button" id="eraser-btn"><img src="icons/eraser.png"></button>
+                <button class="button" id="mode-circle"><img src="icons/circle.png"></button>
+                <button class="button" id="mode-rectangle"><img src="icons/square.png"></button>
+                <button class="button" id="mode-btn"><img src="icons/fill-color.png"></button>
+                <button class="button" id="destroy-btn"><img src="icons/reset.png"></button>
+                <label for="file">
+                    <img src="icons/upload-image.png">
+                    <input type="file" accept="image/*" id="file" style="display: none" />
+                </label>
+                <button class="button" id="save"><img src="icons/save.png"></button>
+            </div>
+            <div class="no-idea">
+                <canvas></canvas>
+                <div class="color-options">
+                    <div class="color-option" style="background-color: #f44336" data-color="#F44336"></div>
+                    <div class="color-option" style="background-color: orangered" data-color="#ff4500"></div>
+                    <div class="color-option" style="background-color: #ffa500" data-color="#ffa500"></div>
+                    <div class="color-option" style="background-color: #ffff00" data-color="#ffff00"></div>
+                    <div class="color-option" style="background-color: #9acd32" data-color="#9acd32"></div>
+                    <div class="color-option" style="background-color: #388e3c" data-color="#388E3C"></div>
+                    <div class="color-option" style="background-color: #0288d1" data-color="#0288D1"></div>
+                    <div class="color-option" style="background-color: #303f9f" data-color="#303F9F"></div>
+                    <div class="color-option" style="background-color: #512da8" data-color="#512DA8"></div>
+                    <div class="color-option" style="background-color: #000000" data-color="#000000"></div>
+                    <label for="color" id="palette">
+                        <img src="icons/palette.png">
+                        <input type="color" id="color" style="display: none" />
+                    </label>
+                </div>
+            </div>
+            <div class="btns right-btns">
+                <fieldset>
+                    <div class="text-tool">
+                        <div class="range">
+                            <input id="font-size" class="font-range" type="range" min="1" max="100" value="40" />
+                        </div>
+                        <div class="text-box">
+                            <input type="text" placeholder="넣고 싶은 텍스트를 입력" id="text" />
+                        </div>
+                        <div class="select-box">
+                            <select id="font-type" autocomplete="off" required>
+                                <option value="nanum-gothic" style="font-family: Nanum Gothic">나눔 고딕</option>
+                                <option value="nanum-myeongjo" style="font-family: Nanum Myeongjo">나눔 명조</option>
+                                <option value="open-Sans" style="font-family: Open Sans">Open Sans</option>
+                                <option value="oswald" style="font-family: Oswald">Oswald</option>
+                                <option value="work-Sans" style="font-family: Work Sans">Work Sans</option>
+                                <option value="hahmlet" style="font-family: Hahmlet">Hahmlet</option>
+                            </select>
+                        </div>
+                        <div class="select-box">
+                            <select id="font-weight">
+                                <option value="normal">보통 굵기</option>
+                                <option value="bold">굵음</option>
+                            </select>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+
+        <script src="js/canvasapp.js"></script>
+    
+    </body>
 </html>
