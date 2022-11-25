@@ -1,83 +1,132 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>canvas</title>
-        <link rel="stylesheet" href="css/canvasstyle.css" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>canvas</title>
+    <link rel="stylesheet" href="css/canvasstyle.css" />
+  </head>
+  <body>
+    <style data="test" type="text/css"></style>
 
-    </head>
-    <body>
-        <style data="test" type="text/css"></style>
-
-        <div class="container">
-            <div class="btns">
-                <div class="range">
-                    <input id="line-width" class="line-range" type="range" min="1" max="100" value="40" step="1" />
-                </div>
-                <button class="button" id="mode-pencil"><img src="icons/pencil.png"></button>
-                <button class="button" id="eraser-btn"><img src="icons/eraser.png"></button>
-                <button class="button" id="mode-circle"><img src="icons/circle.png"></button>
-                <button class="button" id="mode-rectangle"><img src="icons/square.png"></button>
-                <button class="button" id="mode-btn"><img src="icons/fill-color.png"></button>
-                <button class="button" id="destroy-btn"><img src="icons/reset.png"></button>
-                <label for="file">
-                    <img src="icons/upload-image.png">
-                    <input type="file" accept="image/*" id="file" style="display: none" />
-                </label>
-                <button class="button" id="save"><img src="icons/save.png"></button>
-            </div>
-            <div class="no-idea">
-                <canvas></canvas>
-                <div class="color-options">
-                    <div class="color-option" style="background-color: #f44336" data-color="#F44336"></div>
-                    <div class="color-option" style="background-color: orangered" data-color="#ff4500"></div>
-                    <div class="color-option" style="background-color: #ffa500" data-color="#ffa500"></div>
-                    <div class="color-option" style="background-color: #ffff00" data-color="#ffff00"></div>
-                    <div class="color-option" style="background-color: #9acd32" data-color="#9acd32"></div>
-                    <div class="color-option" style="background-color: #388e3c" data-color="#388E3C"></div>
-                    <div class="color-option" style="background-color: #0288d1" data-color="#0288D1"></div>
-                    <div class="color-option" style="background-color: #303f9f" data-color="#303F9F"></div>
-                    <div class="color-option" style="background-color: #512da8" data-color="#512DA8"></div>
-                    <div class="color-option" style="background-color: #000000" data-color="#000000"></div>
-                    <label for="color" id="palette">
-                        <img src="icons/palette.png">
-                        <input type="color" id="color" style="display: none" />
-                    </label>
-                </div>
-            </div>
-            <div class="btns right-btns">
-                <fieldset>
-                    <div class="text-tool">
-                        <div class="range">
-                            <input id="font-size" class="font-range" type="range" min="1" max="100" value="40" />
-                        </div>
-                        <div class="text-box">
-                            <input type="text" placeholder="입력 후 더블클릭" id="text" />
-                        </div>
-                        <div class="select-box">
-                            <select id="font-type" autocomplete="off" required>
-                                <option value="nanum-gothic" style="font-family: Nanum Gothic">나눔 고딕</option>
-                                <option value="nanum-myeongjo" style="font-family: Nanum Myeongjo">나눔 명조</option>
-                                <option value="open-Sans" style="font-family: Open Sans">Open Sans</option>
-                                <option value="oswald" style="font-family: Oswald">Oswald</option>
-                                <option value="work-Sans" style="font-family: Work Sans">Work Sans</option>
-                                <option value="hahmlet" style="font-family: Hahmlet">Hahmlet</option>
-                            </select>
-                        </div>
-                        <div class="select-box">
-                            <select id="font-weight">
-                                <option value="normal">보통 굵기</option>
-                                <option value="bold">굵음</option>
-                            </select>
-                        </div>
-                    </div>
-                </fieldset>
-            </div>
+    <div class="container">
+      <div class="btns">
+        <div class="range">
+          <input
+            id="line-width"
+            class="line-range"
+            type="range"
+            min="1"
+            max="100"
+            value="1"
+            step="1" />
         </div>
+        <button class="button" id="mode-pencil">
+          <img src="icons/pencil.png" />
+        </button>
+        <button class="button" id="eraser-btn">
+          <img src="icons/eraser.png" />
+        </button>
+        <button class="button" id="mode-circle">
+          <img src="icons/circle.png" />
+        </button>
+        <button class="button" id="mode-rectangle">
+          <img src="icons/square.png" />
+        </button>
+        <button class="button" id="mode-triangle">
+          <img src="icons/triangle.png" />
+        </button>
+        <button class="button" id="mode-btn">
+          <img src="icons/fill-color.png" />
+        </button>
+        <button class="button" id="destroy-btn">
+          <img src="icons/reset.png" />
+        </button>
+        <label for="file">
+          <img src="icons/upload-image.png" />
+          <input type="file" accept="image/*" id="file" style="display: none" />
+        </label>
+        <button class="button" id="save"><img src="icons/save.png" /></button>
+      </div>
+      <div class="no-idea">
+        <canvas></canvas>
+        <div class="color-options">
+          <div
+            class="color-option"
+            style="background-color: #f44336"
+            data-color="#F44336"></div>
+          <div
+            class="color-option"
+            style="background-color: orangered"
+            data-color="#ff4500"></div>
+          <div
+            class="color-option"
+            style="background-color: #ffa500"
+            data-color="#ffa500"></div>
+          <div
+            class="color-option"
+            style="background-color: #ffff00"
+            data-color="#ffff00"></div>
+          <div
+            class="color-option"
+            style="background-color: #9acd32"
+            data-color="#9acd32"></div>
+          <div
+            class="color-option"
+            style="background-color: #388e3c"
+            data-color="#388E3C"></div>
+          <div
+            class="color-option"
+            style="background-color: #0288d1"
+            data-color="#0288D1"></div>
+          <div
+            class="color-option"
+            style="background-color: #303f9f"
+            data-color="#303F9F"></div>
+          <div
+            class="color-option"
+            style="background-color: #512da8"
+            data-color="#512DA8"></div>
+          <div
+            class="color-option"
+            style="background-color: #000000"
+            data-color="#000000"></div>
+          <label for="color" id="palette">
+            <img src="icons/palette.png" />
+            <input type="color" id="color" style="display: none" />
+          </label>
+        </div>
+      </div>
+      <div class="btns right-btns">
+        <fieldset>
+          <div class="text-tool">
+            <div class="range">
+              <input
+                id="font-size"
+                class="font-range"
+                type="range"
+                min="1"
+                max="100"
+                value="40" />
+            </div>
+            <div class="text-box">
+              <input
+                type="text"
+                placeholder="넣고 싶은 텍스트를 입력"
+                id="text" />
+            </div>
+            <div class="select-box">
+              <select id="font-weight">
+                <option value="normal">보통 굵기</option>
+                <option value="bold">굵음</option>
+              </select>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+    </div>
 
-        <script src="js/canvasapp.js"></script>
-    
-    </body>
+    <script src="js/canvasapp.js"></script>
+  </body>
 </html>
