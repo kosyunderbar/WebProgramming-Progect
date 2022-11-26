@@ -2,6 +2,12 @@
 <head>
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="css/memostyles.css" />
+    <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"
+            ></script>
+        <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.2/FileSaver.min.js"
+        ></script> 
     <title> 메모판 </title>
 </head>
 <body>
@@ -31,12 +37,13 @@
         <button id="Left">
             <img src="icons/leftalign.png">
         </button>
-        <button id="btn-image">
-            <img src="icons/upload-image.png">
-            <input id="img-selector" type="file"/>
+        <button id="download">
+            <img src="icons/save.png">
         </button>
     </div>
+    <div id="image__">
         <div id="editor" contenteditable="true"></div>
+    </div>
         <div id="right-menu">
         <select id="Font-size">
             <option value="">폰트 사이즈</option>
@@ -69,5 +76,13 @@
         </div>
     
     </div>
+    <script>
+        document.getElementById('download').onclick = function(){
+      domtoimage.toBlob(document.getElementById('image__'))
+      .then(function (blob) {
+          window.saveAs(blob, 'image__.png');
+      });
+    }
+      </script>
     <script src="js/memowork.js"></script>
 </body>
