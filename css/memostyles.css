@@ -34,12 +34,14 @@
   font-weight: normal;
   font-style: normal;
 }
-
+#image__{
+  padding: 20px;
+  background-color: rgb(255, 255, 255);
+}
 .editor-menu {
-  margin-right: 24px;
-  width: 400px;
+  width: 600px;
   height: 580px;
-  padding-left: 240px;
+  padding-left:90px;
   display: inline-block;
 }
 .container {
@@ -55,9 +57,8 @@ div#editor-menu {
   box-sizing: border-box;
 }
 div#editor {
-  width: 1200px;
+  width: 1100px;
   height: 800px;
-  padding: 16px 24px;
   border: 1px solid #d6d6d6;
   border-radius: 4px;
   box-sizing: border-box;
@@ -66,7 +67,7 @@ div#editor {
 div#right-menu {
   box-sizing: border-box;
   cursor: pointer;
-  padding-left: 30px;
+  padding-left: 13px;
   padding-bottom: 30%;
 }
 
@@ -138,7 +139,7 @@ select#Font-size {
   text-align: center;
   transition: top 0.01s linear;
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
-  background-color: skyblue;
+  background-color:  #1f75d9;
   border: none;
   width: 70px;
   height: 70px;
