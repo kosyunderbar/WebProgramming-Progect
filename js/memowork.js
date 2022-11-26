@@ -7,7 +7,6 @@ const OL = document.getElementById("Olist");
 const UL = document.getElementById("Ulist");
 const MIDDLE = document.getElementById("Middle");
 const LEFT = document.getElementById("Left");
-
 //글씨 굵기 확장 기능
 BOLD.addEventListener("click", function () {
   setStyle("bold");
@@ -46,28 +45,11 @@ function setStyle(style) {
   focusEditor();
 }
 //이미지 기능
-const btnImage = document.getElementById("btn-image");
-const imageSelector = document.getElementById("img-selector");
-
-btnImage.addEventListener("click", function () {
-  imageSelector.click();
-});
-
-imageSelector.addEventListener("change", function (e) {
-  const files = e.target.files;
-  if (!!files) {
-    insertImageDate(files[0]);
-  }
-});
-
-function insertImageDate(file) {
-  const reader = new FileReader();
-  reader.addEventListener("load", function (e) {
-    focusEditor();
-    document.execCommand("insertImage", false, `${reader.result}`);
+document.getElementById("download").onclick = function () {
+  domtoimage.toBlob(document.getElementById("image__")).then(function (blob) {
+    window.saveAs(blob, "image__.png");
   });
-  reader.readAsDataURL(file);
-}
+};
 
 //하이라이트 색상
 const Highlight = document.getElementById("HIGHLIGHT");
