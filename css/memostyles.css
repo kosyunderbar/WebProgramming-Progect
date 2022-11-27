@@ -75,7 +75,8 @@ div#right-menu {
   display: none;
 }
 #editor img {
-  max-width: 30%;
+  width: 800px;
+  height: 450px;
 }
 
 body {
